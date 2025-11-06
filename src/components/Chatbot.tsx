@@ -39,6 +39,35 @@ const Chatbot: React.FC<ChatbotProps> = ({ currentModel = 'Neural Networks' }) =
   const getAIResponse = (userMessage: string): string => {
     const lowerMessage = userMessage.toLowerCase();
     
+    // Inference Explorer specific questions
+    if (lowerMessage.includes('inference') || lowerMessage.includes('layer by layer')) {
+      return "🎯 **Inference Explorer** shows real neural network processing!\n\nEach layer transforms the image:\n• **Conv layers**: Extract features (edges→textures→patterns)\n• **Pooling**: Reduces size, keeps important info\n• **Batch Norm**: Stabilizes training\n• **Activation (ReLU)**: Adds non-linearity (max(0,x))\n• **Global Avg Pool**: Converts feature maps to vectors\n• **Dense**: Learns class patterns\n• **Softmax**: Converts to probabilities\n\nWatch how spatial dimensions shrink but channels increase as the network extracts deeper features!";
+    }
+    
+    if (lowerMessage.includes('feature map') || lowerMessage.includes('activation')) {
+      return "🔍 **Feature Maps** are the outputs of convolutional layers!\n\nEach filter in a conv layer produces one feature map:\n• **Early layers**: Detect edges, colors, simple patterns\n• **Middle layers**: Detect textures, shapes, parts\n• **Deep layers**: Detect complex objects, faces, scenes\n\nVisualization shows first 16 channels. Bright areas = strong activation = important features detected!";
+    }
+    
+    if (lowerMessage.includes('weight') || lowerMessage.includes('pretrained')) {
+      return "⚖️ **Pretrained Weights** are learned from ImageNet (1.2M images, 1000 classes)!\n\nEach layer has weights:\n• **Conv filters**: 3D tensors (height×width×channels×filters)\n• **Batch Norm**: Scale & shift parameters\n• **Dense layers**: 2D matrices (input×output)\n\nMobileNet was trained for weeks on powerful GPUs. You're using those learned patterns instantly in your browser!";
+    }
+    
+    if (lowerMessage.includes('how image change') || lowerMessage.includes('transformation')) {
+      return "🖼️ **Image Transformation Through Layers**:\n\n1. **Input (224×224×3)**: RGB pixels\n2. **Conv1 (112×112×32)**: 32 edge detectors, spatial size halved\n3. **Pool (56×56×32)**: Downsampled, keeps important features\n4. **Conv2 (56×56×64)**: 64 texture detectors\n5. **Conv3 (28×28×128)**: 128 pattern detectors\n6. **Global Pool (1×1×128)**: Each feature map → single value\n7. **Dense (256)**: High-level feature combinations\n8. **Output (1000)**: Probabilities for each class\n\nSpatial info: 224→112→56→28→14→1\nChannels: 3→32→64→128→256→1000";
+    }
+    
+    if (lowerMessage.includes('why batch norm') || lowerMessage.includes('normalization')) {
+      return "📊 **Batch Normalization** is crucial for deep networks!\n\n**Why use it?**\n• Normalizes activations: mean=0, std=1\n• Faster training (higher learning rates)\n• Reduces internal covariate shift\n• Acts as regularization\n• Stabilizes gradients\n\n**How it works:**\n1. Normalize: (x - mean) / sqrt(variance + ε)\n2. Scale: γ * normalized_x\n3. Shift: + β\n\nγ and β are learned parameters!";
+    }
+    
+    if (lowerMessage.includes('1d array') || lowerMessage.includes('flatten') || lowerMessage.includes('vector')) {
+      return "📐 **1D Vectors in Neural Networks**:\n\n**How 2D→1D happens:**\n• **Global Avg Pooling**: Average each feature map (14×14→1)\n• **Flatten**: Reshape (7×7×512 → 25,088)\n• Result: 1D vector ready for Dense layers\n\n**Why needed?**\nDense layers need fixed-size 1D input. They can't handle 2D spatial data directly.\n\n**Example:**\n3×3×2 feature maps → [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18] (18 values)\n\nEach value represents activation strength for that spatial position & channel!";
+    }
+    
+    if (lowerMessage.includes('why pooling') || lowerMessage.includes('maxpool')) {
+      return "🌊 **Pooling Layers** reduce dimensions intelligently!\n\n**Why use pooling?**\n• Reduces computation (fewer parameters)\n• Provides translation invariance\n• Extracts dominant features\n• Prevents overfitting\n• Increases receptive field\n\n**Max Pooling (2×2):**\n```\n[1 2]     \n[3 4] → 4 (takes maximum)\n```\n\n**Effect:** 224×224 → 112×112 (75% fewer pixels!)\n\nNo learnable parameters, just downsampling!";
+    }
+    
     // Knowledge base for common questions
     if (lowerMessage.includes('alexnet')) {
       return "AlexNet (2012) was revolutionary! It's a deep CNN with 8 layers (5 convolutional + 3 fully connected) that won ImageNet 2012. Key innovations: ReLU activation, dropout regularization, overlapping pooling, and GPU training. It has ~60M parameters and achieved 15.3% top-5 error.";

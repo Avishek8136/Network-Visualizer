@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { Info, Brain, Home, Network } from 'lucide-react';
+import { Info, Brain, Home, Network, Activity } from 'lucide-react';
 import ModelSelector from './components/ModelSelector';
 import NetworkVisualizer from './components/NetworkVisualizer';
 import ModelInfoPanel from './components/ModelInfoPanel';
 import Chatbot from './components/Chatbot';
 import Dashboard from './components/Dashboard';
+import InferenceExplorer from './components/InferenceExplorer';
 import { neuralNetworkModels } from './data/models';
 
 function App() {
   const [selectedModel, setSelectedModel] = useState(neuralNetworkModels[0]);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'dashboard' | 'visualizer'>('dashboard');
+  const [currentPage, setCurrentPage] = useState<'dashboard' | 'visualizer' | 'inference'>('dashboard');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
@@ -52,6 +53,17 @@ function App() {
                 <Network className="w-5 h-5" />
                 Visualizer
               </button>
+              <button
+                onClick={() => setCurrentPage('inference')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors shadow-md hover:shadow-lg ${
+                  currentPage === 'inference'
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <Activity className="w-5 h-5" />
+                Inference Explorer
+              </button>
               
               {currentPage === 'visualizer' && (
                 <button
@@ -70,6 +82,8 @@ function App() {
       {/* Main Content */}
       {currentPage === 'dashboard' ? (
         <Dashboard />
+      ) : currentPage === 'inference' ? (
+        <InferenceExplorer />
       ) : (
         <main className="max-w-7xl mx-auto px-6 py-8">
           {/* Model Selector */}
