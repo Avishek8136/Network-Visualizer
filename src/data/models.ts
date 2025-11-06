@@ -551,5 +551,139 @@ export const neuralNetworkModels: ModelInfo[] = [
         description: 'Output layer'
       }
     ]
+  },
+  {
+    id: 'mobilenet',
+    name: 'MobileNet',
+    year: 2017,
+    description: 'MobileNet is an efficient CNN architecture designed for mobile and embedded devices. It uses depthwise separable convolutions to significantly reduce computation and model size while maintaining accuracy.',
+    keyFeatures: [
+      'Depthwise separable convolutions for efficiency',
+      'Lightweight: only ~4.2 million parameters',
+      'Fast inference on mobile devices',
+      'Width multiplier for model scaling',
+      'Optimized for resource-constrained environments'
+    ],
+    totalParameters: '~4.2 million',
+    inputSize: '224x224x3',
+    outputClasses: 1000,
+    accuracy: 'Top-1: 70.6%, Top-5: 89.5%',
+    paperLink: 'https://arxiv.org/abs/1704.04861',
+    useCases: [
+      'Mobile Image Classification',
+      'Real-time Object Detection',
+      'Embedded Systems',
+      'Edge Computing',
+      'Resource-Constrained Deployment'
+    ],
+    layers: [
+      {
+        name: 'Input',
+        type: 'Input',
+        outputShape: '224×224×3',
+        description: 'RGB image input'
+      },
+      {
+        name: 'Conv1',
+        type: 'Convolution',
+        outputShape: '112×112×32',
+        parameters: 896,
+        kernelSize: '3×3',
+        stride: '2',
+        activation: 'ReLU6',
+        description: 'Initial standard convolution'
+      },
+      {
+        name: 'DepthwiseConv1',
+        type: 'DepthwiseConv',
+        outputShape: '112×112×32',
+        parameters: 320,
+        kernelSize: '3×3',
+        stride: '1',
+        description: 'Depthwise separable convolution block 1'
+      },
+      {
+        name: 'PointwiseConv1',
+        type: 'Convolution',
+        outputShape: '112×112×64',
+        parameters: 2112,
+        kernelSize: '1×1',
+        activation: 'ReLU6',
+        description: 'Pointwise convolution (1×1)'
+      },
+      {
+        name: 'DepthwiseConv2',
+        type: 'DepthwiseConv',
+        outputShape: '56×56×64',
+        parameters: 640,
+        kernelSize: '3×3',
+        stride: '2',
+        description: 'Depthwise separable with stride 2'
+      },
+      {
+        name: 'PointwiseConv2',
+        type: 'Convolution',
+        outputShape: '56×56×128',
+        parameters: 8320,
+        kernelSize: '1×1',
+        activation: 'ReLU6',
+        description: 'Expand to 128 channels'
+      },
+      {
+        name: 'DepthwiseConv3',
+        type: 'DepthwiseConv',
+        outputShape: '56×56×128',
+        parameters: 1280,
+        kernelSize: '3×3',
+        description: 'Depthwise block 3'
+      },
+      {
+        name: 'PointwiseConv3',
+        type: 'Convolution',
+        outputShape: '56×56×128',
+        parameters: 16512,
+        kernelSize: '1×1',
+        activation: 'ReLU6',
+        description: 'Maintain 128 channels'
+      },
+      {
+        name: 'DepthwiseConv4',
+        type: 'DepthwiseConv',
+        outputShape: '28×28×128',
+        parameters: 1280,
+        kernelSize: '3×3',
+        stride: '2',
+        description: 'Downsample to 28×28'
+      },
+      {
+        name: 'PointwiseConv4',
+        type: 'Convolution',
+        outputShape: '28×28×256',
+        parameters: 33024,
+        kernelSize: '1×1',
+        activation: 'ReLU6',
+        description: 'Expand to 256 channels'
+      },
+      {
+        name: 'GlobalAvgPool',
+        type: 'GlobalAveragePooling',
+        outputShape: '1×1×1024',
+        description: 'Global average pooling'
+      },
+      {
+        name: 'Dropout',
+        type: 'Dropout',
+        outputShape: '1024',
+        description: 'Dropout for regularization (0.001)'
+      },
+      {
+        name: 'FC',
+        type: 'Fully Connected',
+        outputShape: '1000',
+        parameters: 1025000,
+        activation: 'Softmax',
+        description: 'Output classification layer'
+      }
+    ]
   }
 ];

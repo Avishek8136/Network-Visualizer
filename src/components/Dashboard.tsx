@@ -179,6 +179,16 @@ const Dashboard: React.FC = () => {
       params: '(3×3×64×64) + 64 = 36,928',
     },
     {
+      name: 'MobileNet DepthwiseConv',
+      input: '112×112×32',
+      kernel: '3×3',
+      stride: 1,
+      padding: 1,
+      filters: 32,
+      output: '112×112×32',
+      params: '(3×3×1×32) + 32 = 320 (efficient!)',
+    },
+    {
       name: 'MaxPool Standard',
       input: '224×224×64',
       kernel: '2×2',
